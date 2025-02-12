@@ -49,20 +49,23 @@ const readTeacherInfo = async (id) => {
             });
     });
 }
-
 const addTeacher = async (id, name, age) => {
-    const sql = `SELECT * FROM teacher`
+    const sql = `INSERT INTO teacher(id,name,age) values (?, ?, ?)`
     return new Promise((resolve, reject) => {
         knex_db
-            .raw(sql)
-            .then((teacher) => {
-                resolve(teacher);
+            .raw(sql, [id, name, age])
+            .then(() => {
+                resolve({status: "Successfully inserted Teacher"})
             })
             .catch((error) => {
                 reject(error);
             });
     });
 }
+
+
+
+
 
 
 
