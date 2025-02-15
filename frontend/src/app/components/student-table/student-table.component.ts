@@ -1,85 +1,67 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 import { faTrash, faPlus, faPenSquare } from '@fortawesome/free-solid-svg-icons';
-import { AppServiceService } from '../../app-service.service';
+import {AppServiceService} from '../../app-service.service';
 @Component({
-  selector: 'app-teacher-table',
-  templateUrl: './teacher-table.component.html',
-  styleUrls: ['./teacher-table.component.css']
+  selector: 'app-student-table',
+  templateUrl: './student-table.component.html',
+  styleUrls: ['./student-table.component.css']
 })
-export class TeacherTableComponent implements OnInit {
+export class StudentTableComponent implements OnInit {
 
   faTrash = faTrash;
   faPlus = faPlus;
   faPenSquare = faPenSquare;
-  teacherData: any;
+  studentData: any;
   selected: any;
 
-  constructor(private service: AppServiceService, private router: Router) { }
+  constructor(private service : AppServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getTeacherData();
+    this.getStudentData();
   }
 
-  addNewTeacher() {
-    this.router.navigate(['addTeacher'])
+  addNewStudent(){
+    this.router.navigate(['addStudent'])
   }
 
-  editTeacher(id) {
+  editStudent(id){
     const navigationExtras: NavigationExtras = {
       state: {
-        id: id
+        id : id
       }
     };
-    this.router.navigate(['editTeacher'], navigationExtras)
+    this.router.navigate(['editStudent'], navigationExtras )
   }
 
-  initializeDB(){
-    this.service.initializeDB().subscribe((response) => {
-      console.log('DB is Initialized')
-    }, (error) => {
+  getStudentData(){
+    this.service.getStudentData().subscribe((response)=>{
+      this.studentData = Object.keys(response).map((key) => [response[key]]);
+    },(error)=>{
       console.log('ERROR - ', error)
     })
   }
 
-  getTeacherData() {
-    this.selected = 'Teachers';
-    this.service.getTeacherData().subscribe((response) => {
-      this.teacherData = Object.keys(response).map((key) => [response[key]]);
-    }, (error) => {
-      console.log('ERROR - ', error)
-    })
-  }
-
-  getStudentData() {
-    this.selected = 'Students';
-    this.service.getStudentData().subscribe((response) => {
-      this.teacherData = response;
-    }, (error) => {
-      console.log('ERROR - ', error)
+  deleteStudent(itemid){
+    const student = {
+      id: itemid
+    }
+    this.service.deleteStudent(student).subscribe((response)=>{
+      this.getStudentData()
     })
   }
 
   search(value) {
     let foundItems = [];
     if (value.length <= 0) {
-      this.getTeacherData();
+      this.getStudentData();
     } else {
-      let b = this.teacherData.filter((teacher) => {
-        if (teacher[0].name.toLowerCase().indexOf(value) > -1) {
-          foundItems.push(teacher)
+      let b = this.studentData.filter((student) => {
+        if (student[0].name.toLowerCase().indexOf(value) > -1) {
+          foundItems.push(student)
         }
       });
-      this.teacherData = foundItems;
+      this.studentData = foundItems;
     }
-  }
-
-  deleteTeacher(itemid) {
-    const test = {
-      id: itemid
-    }
-    this.service.deleteTeacher(test).subscribe((response) => {
-      this.getTeacherData()
-    })
   }
 }
