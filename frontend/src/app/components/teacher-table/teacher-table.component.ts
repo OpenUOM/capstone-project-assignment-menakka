@@ -61,7 +61,6 @@ export class TeacherTableComponent implements OnInit {
   }
 
   search(value) {
-
     let foundItems = [];
     if (value.length <= 0) {
       this.getTeacherData();
