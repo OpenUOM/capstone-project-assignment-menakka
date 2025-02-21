@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { faTrash, faPlus, faPenSquare } from '@fortawesome/free-solid-svg-icons';
 import { AppServiceService } from '../../app-service.service';
+
 @Component({
   selector: 'app-teacher-table',
   templateUrl: './teacher-table.component.html',
@@ -60,6 +61,7 @@ export class TeacherTableComponent implements OnInit {
     })
   }
 
+  
   search(value) {
     let foundItems = [];
     if (value.length <= 0) {
@@ -73,6 +75,15 @@ export class TeacherTableComponent implements OnInit {
       this.teacherData = foundItems;
     }
   }
+
+
+
+
+
+
+ 
+
+   
 
   deleteTeacher(itemid) {
     const test = {
